@@ -60,9 +60,10 @@ fileprivate func writePNG(image: UIImage, path:String) throws {
 /// - Parameter view: view to render
 /// - Returns: path of temporary directory where the AppIcon.AppIconSet folder is located
 @MainActor public func generateAppIconSet(from view: some View) throws -> String {
-    let folder = NSTemporaryDirectory() + "AppIcon.appiconset/"
-    try createFolder(at: folder)
-    try writeContentFile(to: folder)
+    let temporary = FileManager.default.temporaryDirectory
+    let folder = temporary.appendingPathComponent(UUID().uuidString).appendingPathComponent("AppIcon.appiconset")
+    try createFolder(at: folder.path)
+    try writeContentFile(to: folder.path)
 
     let contents = Contents()
     try contents.images.forEach { iconInfo in
@@ -77,8 +78,9 @@ fileprivate func writePNG(image: UIImage, path:String) throws {
 #else
         guard let image = renderer.uiImage else { return }
 #endif
-        try writePNG(image: image, path: folder + iconInfo.filename)
+        let file = folder.appendingPathComponent(iconInfo.filename)
+        try writePNG(image: image, path: file.path)
     }
 
-    return folder
+    return folder.path
 }
