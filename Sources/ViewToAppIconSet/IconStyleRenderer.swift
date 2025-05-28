@@ -63,7 +63,7 @@ internal struct IconStyleRenderer: ViewModifier {
                 content
                     .environment(\.parentSize, width)
                     .clipShape(RoundedRectangle(cornerRadius: (width*0.2), style: .circular))
-                    .shadow(radius: (width*0.02), y: (width*0.002))
+//                    .shadow(radius: (width*0.02), y: (width*0.002))
                     .padding((width*0.08))
                     .frame(width: width, height: width, alignment: .center)
             }
